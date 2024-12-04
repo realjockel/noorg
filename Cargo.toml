@@ -1,6 +1,7 @@
 [package]
 name = "noorg"
 version = "0.1.0"
+edition = "2021"
 
 [[bin]]
 name = "note_cli"
