@@ -1,0 +1,18 @@
+file_type = 'md'
+timestamps = true
+note_dir = '/FULLPATH/notes' 
+scripts_dir = 'scripts'
+enabled_observers = ['timestamp', 'sqlite', 'tag_index', 'similar_notes', 'toc']
+obsidian_vault_path='/FULLPATH/iCloud~md~obsidian/Documents/Obsidian'
+[similar_notes]
+excluded_notes = [
+    "_kanban",
+    "_tag_index",
+    "project",
+    # Add any other notes you want to exclude
+]
+excluded_from_references = [
+    "_tag_index",
+    "_kanban",
+    # Add notes that shouldn't appear as similar
+]

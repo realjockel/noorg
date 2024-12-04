@@ -1,0 +1,63 @@
+[package]
+name = "noorg"
+version = "0.1.0"
+
+[[bin]]
+name = "note_cli"
+path = "src/bin/note_cli.rs"
+
+[[bin]]
+name = "note_tray"
+path = "src/bin/note_tray.rs"
+
+[[bin]]
+name = "note_settings"
+path = "src/bin/note_settings.rs"
+
+
+[dependencies]
+
+config = "0.14.0"
+serde = { version = "1.0", features = ["derive"] }
+clap = { version = "4.0", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
+tempfile = "3.2.0"
+serde_yaml = "0.9"
+serde_json = "1.0"
+kalosm = { version = "0.3.2", features = ["metal", "language", "surrealdb"] }
+tokio = { version = "1.0", features = ["full"] }
+mlua = { version = "0.10.0", features = ["lua54", "async", "send","serialize"] }
+pyo3 = { version = "0.22.5", features = ["auto-initialize", "gil-refs"] }
+lazy_static = "1.4"
+rusqlite = "0.32.1"
+futures = "0.3"
+surrealdb = { version = "1.5.6" } 
+once_cell = "1.8"
+notify = "6.1.1"
+url = "2.4.0"
+urlencoding = "2.1.2"
+percent-encoding = "2.3.0"
+pulldown-cmark = "0.9.1"
+sha2 = "0.10.8"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+directories = "5.0"
+dirs = "5.0"
+toml = "0.8"
+rust-embed = "8.0"
+tray-icon = "0.19.2"
+tao = "0.30.8"
+rfd = "0.15.1"
+image = "0.24.6"
+iced = { version = "0.10", features = ["tokio","debug"] }
+tracing-appender = "0.2"
+[build]
+rustflags = ["-C", "target-cpu=native"]
+
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "target-feature=-avx,-avx2"]
+
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.24.0"
+objc = "0.2"
+core-foundation = "0.10.0"

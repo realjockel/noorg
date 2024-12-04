@@ -1,0 +1,16 @@
+pub mod cli;
+pub mod editor;
+pub mod embedded;
+pub mod event;
+pub mod handlers;
+pub mod logging;
+pub mod metadata;
+pub mod note;
+pub mod observer_registry;
+pub mod observers;
+pub mod script_loader;
+pub mod settings;
+pub mod settings_dialog;
+pub mod utils;
+pub mod watcher;
+pub mod window_manager;
