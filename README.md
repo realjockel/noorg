@@ -72,6 +72,29 @@ brew install python@3.9
 export PYTHON_CONFIGURE_OPTS="--enable-framework"
 export PYO3_PYTHON="/opt/homebrew/opt/python@3.9/bin/python3.9"
 ```
+3. Install Lua
+
+```bash
+brew install lua # macOS
+apt install lua5.4 # Debian, Ubuntu
+
+# find lua path
+lua -e "print(package.path:match('([^;]+)/?.lua'))"
+
+# download json.lua dependency
+curl -O https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
+
+# macOS: Copy to Lua package path
+sudo cp json.lua /opt/homebrew/share/lua/5.4/json.lua
+
+# Linux: Copy to Lua package path (typically one of these)
+sudo cp json.lua /usr/local/share/lua/5.4/json.lua
+# or
+sudo cp json.lua /usr/share/lua/5.4/json.lua
+
+# Verify installation
+lua -e "require('json')"
+```
 
 ### Option Build from Source
 
@@ -91,11 +114,11 @@ cargo build --release
 ### Install Script
 
 ```bash
-./scripts/install.sh
+./install.sh
 ```
 Uninstall with:
 ```bash
-./scripts/install.sh uninstall
+./install.sh uninstall
 ```
 
 ## Usage
