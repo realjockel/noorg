@@ -1,4 +1,4 @@
-# Noorg
+![banner](resources/banner.png)
 
 Capture everything, organize nothing.
 
