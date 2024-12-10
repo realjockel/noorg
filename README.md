@@ -59,9 +59,6 @@ Noorg is for those minds, who want to break free from the constraints of traditi
 ```bash
 # macOS/Linux
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# Windows
-# Download and run rustup-init.exe from https://rustup.rs
 ```
 
 2. Install Python dependencies:
@@ -86,11 +83,6 @@ curl -O https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
 
 # macOS: Copy to Lua package path
 sudo cp json.lua /opt/homebrew/share/lua/5.4/json.lua
-
-# Linux: Copy to Lua package path (typically one of these)
-sudo cp json.lua /usr/local/share/lua/5.4/json.lua
-# or
-sudo cp json.lua /usr/share/lua/5.4/json.lua
 
 # Verify installation
 lua -e "require('json')"
