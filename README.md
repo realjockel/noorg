@@ -1,5 +1,9 @@
 ![banner](resources/banner.png)
 
+[Website 🚀](https://noorg.dev) [Docs ✍️](https://noorg.dev/docs/intro)
+
+ ⚠️ Currently only buildable on MacOS, still experimental
+
 Capture everything, organize nothing.
 
 Noorg is not just another note-taking tool—it's an editor-agnostic platform designed to integrate seamlessly with any text editor you prefer. Whether you're a fan of Vim, Emacs, VSCode, Obsidian or any other editor, Noorg empowers you to focus on what truly matters: capturing your thoughts and ideas without the burden of organization.
@@ -57,7 +61,7 @@ Noorg is for those minds, who want to break free from the constraints of traditi
 
 1. Install Rust and Cargo:
 ```bash
-# macOS/Linux
+# macOS
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
@@ -73,7 +77,6 @@ export PYO3_PYTHON="/opt/homebrew/opt/python@3.9/bin/python3.9"
 
 ```bash
 brew install lua # macOS
-apt install lua5.4 # Debian, Ubuntu
 
 # find lua path
 lua -e "print(package.path:match('([^;]+)/?.lua'))"
@@ -103,7 +106,7 @@ cargo build --release
 ```
 
 
-### Install Script
+### Install Script (prefered)
 
 ```bash
 ./install.sh
@@ -157,24 +160,22 @@ The system tray application provides quick access to:
 - Starting a watch to automatically process your notes on change
 
 ## Configuration
-The configuration file (`config.toml`) is automatically created in the following locations depending on your operating system:
+The configuration file (`config.toml`) is automatically created in the following location:
 
 ### Config Location
-- **Linux**: `~/.config/norg/config.toml`
 - **macOS**: `~/Library/Application Support/norg/config.toml`
-- **Windows**: `C:\Users\<Username>\AppData\Roaming\norg\config.toml`
 
 ### Data Directory
 Application data is stored in:
-- **Linux**: `~/.local/share/norg/`
+
 - **macOS**: `~/Library/Application Support/norg/`
-- **Windows**: `C:\Users\<Username>\AppData\Local\norg\`
 
 ## Development Roadmap
 
 - [ ] Fix query and list cli commands
 - [ ] Add more tests
 - [ ] Add more examples
+- [ ] fix similar notes observer (RAG)
 
 ## License
 
