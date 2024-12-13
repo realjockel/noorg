@@ -4,7 +4,9 @@ use noorg::{
     observer_registry::ObserverRegistry, script_loader::ScriptLoader, settings::Settings,
     window_manager,
 };
+use std::env;
 use std::io::Cursor;
+use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::{io, sync::Arc};
 use tao::event_loop::{ControlFlow, EventLoop};
@@ -15,8 +17,6 @@ use tray_icon::{
     menu::{Menu, MenuEvent, MenuItem},
     TrayIconBuilder,
 };
-use std::path::PathBuf;
-use std::env;
 
 #[derive(Debug)]
 enum TrayCommand {
@@ -212,10 +212,10 @@ async fn main() -> io::Result<()> {
                 TrayCommand::ToggleWatch => {
                     if !is_watching.load(Ordering::SeqCst) {
                         info!("Starting file watcher...");
-                        
+
                         // Get the path to the note_cli binary using our new path functions
                         let note_cli = get_cli_path();
-                        
+
                         info!("Using note_cli binary at: {:?}", note_cli);
                         if !note_cli.exists() {
                             error!("note_cli binary not found at {:?}", note_cli);
@@ -235,16 +235,18 @@ async fn main() -> io::Result<()> {
                         stop_signal.store(false, Ordering::SeqCst);
 
                         std::thread::spawn(move || {
-                            if let Err(e) = tokio::runtime::Runtime::new().unwrap().block_on(async {
-                                let settings = settings.lock().await;
-                                handle_command(
-                                    Command::Watch,
-                                    settings.clone(),
-                                    observer_registry,
-                                    Some(Arc::clone(&stop_signal)),
-                                )
-                                .await
-                            }) {
+                            if let Err(e) =
+                                tokio::runtime::Runtime::new().unwrap().block_on(async {
+                                    let settings = settings.lock().await;
+                                    handle_command(
+                                        Command::Watch,
+                                        settings.clone(),
+                                        observer_registry,
+                                        Some(Arc::clone(&stop_signal)),
+                                    )
+                                    .await
+                                })
+                            {
                                 error!("Failed to start watcher: {}", e);
                                 show_error("Failed to start watcher", &e.to_string());
                                 is_watching_clone.store(false, Ordering::SeqCst);
@@ -317,12 +319,12 @@ async fn main() -> io::Result<()> {
                         let message = format!(
                             "Watched Directory: {}\n\
                              File Type: {}\n\
-                             Active Observers: {}", 
+                             Active Observers: {}",
                             settings_guard.note_dir,
                             settings_guard.file_type,
                             settings_guard.enabled_observers.join(", ")
                         );
-                        
+
                         rfd::MessageDialog::new()
                             .set_title("Note Watcher Info")
                             .set_description(&message)

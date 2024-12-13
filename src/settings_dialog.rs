@@ -190,7 +190,7 @@ impl Application for SettingsDialog {
             section_title_style("Enabled Observers"),
             container(
                 column(
-                    vec!["timestamp", "sqlite", "tag_index", "similar_notes", "toc"]
+                    vec!["timestamp", "sqlite", "tag_index", "toc"]
                         .into_iter()
                         .map(|observer| {
                             checkbox(

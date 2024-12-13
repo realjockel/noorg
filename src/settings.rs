@@ -78,6 +78,13 @@ impl Settings {
         let config_dir = proj_dirs.config_dir();
         debug!("Config directory: {:?}", config_dir);
 
+        // Create the config directory if it does not exist
+        if !config_dir.exists() {
+            fs::create_dir_all(config_dir).map_err(|e| {
+                ConfigError::NotFound(format!("Failed to create config directory: {}", e))
+            })?;
+        }
+
         // Create base directories
         let norg_base_dir = dirs::document_dir()
             .map(|d| d.join("norg"))
@@ -115,7 +122,6 @@ impl Settings {
                     "timestamp".to_string(),
                     "sqlite".to_string(),
                     "tag_index".to_string(),
-                    "similar_notes".to_string(),
                     "toc".to_string(),
                 ],
                 similar_notes: SimilarNotesConfig {

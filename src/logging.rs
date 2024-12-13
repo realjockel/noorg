@@ -1,6 +1,6 @@
 use std::fs;
-use tracing_subscriber::{fmt, prelude::*, EnvFilter};
 use tracing_appender::rolling::{RollingFileAppender, Rotation};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter};
 
 pub fn init_logging(debug: bool) {
     // Determine the log directory
@@ -14,11 +14,7 @@ pub fn init_logging(debug: bool) {
     fs::create_dir_all(&log_dir).expect("Failed to create log directory");
 
     // Set up file appender
-    let file_appender = RollingFileAppender::new(
-        Rotation::DAILY,
-        log_dir.clone(),
-        "note_app.log",
-    );
+    let file_appender = RollingFileAppender::new(Rotation::DAILY, log_dir.clone(), "note_app.log");
 
     // Create the file layer
     let file_layer = fmt::layer()
@@ -52,5 +48,8 @@ pub fn init_logging(debug: bool) {
         .init();
 
     tracing::info!("Logging initialized");
-    tracing::info!("Log file location: {}", log_dir.join("note_app.log").display());
+    tracing::info!(
+        "Log file location: {}",
+        log_dir.join("note_app.log").display()
+    );
 }

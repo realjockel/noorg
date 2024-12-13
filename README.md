@@ -2,7 +2,7 @@
 
 [Website 🚀](https://noorg.dev) [Docs ✍️](https://noorg.dev/docs/intro)
 
- ⚠️ Currently only buildable on MacOS, still experimental
+ ⚠️ Currently only buildable on MacOS and Linux, still experimental
 
 Capture everything, organize nothing.
 
@@ -58,7 +58,7 @@ Noorg is for those minds, who want to break free from the constraints of traditi
 ## Installation
 
 ### Prerequisites
-
+#### macOS
 1. Install Rust and Cargo:
 ```bash
 # macOS
@@ -89,6 +89,31 @@ sudo cp json.lua /opt/homebrew/share/lua/5.4/json.lua
 
 # Verify installation
 lua -e "require('json')"
+```
+#### Linux
+1. Install Rust and Cargo:
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+2. Install Python Dependencies:
+```bash
+add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get install -y python3.9 python3.9-distutils python3.9-venv
+sudo apt-get install -y python3.12-dev
+```
+
+3. Install Lua Depenedncies
+```bash
+sudo apt-get install -y lua5.4 liblua5.4-dev liblua5.1-0-dev
+curl -O https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
+sudo mkdir /usr/local/share/lua/5.4/ -p
+sudo cp json.lua /usr/local/share/lua/5.4/json.lua
+```
+
+4. Install additionl dependencies
+```bash
+sudo apt-get install -y libxdo-dev libsqlite3-dev libssl-dev libglib2.0-dev libgirepository1.0-dev gcc g++ clang libgtk-3-dev
 ```
 
 ### Option Build from Source
@@ -124,6 +149,12 @@ Run `noorg` system tray application.
 ```bash
 noorg
 ```
+
+⚠️ Note: The system tray application displays but doesn't work on Linux so far. Therefore, use the note_cli tool with the following command
+```bash
+noorg note_cli watch
+```
+
 
 Run `noorg note_cli` to use the command line interface.
 ```bash

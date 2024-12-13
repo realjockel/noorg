@@ -19,10 +19,10 @@ fn create_timestamp_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> 
     Box::new(timestamp::TimestampObserver)
 }
 
-// Function to create LlmMetadataObserver
-fn create_llm_metadata_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> {
-    Box::new(llm_metadata::LlmMetadataObserver::new().unwrap())
-}
+// // Function to create LlmMetadataObserver
+// fn create_llm_metadata_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> {
+//     Box::new(llm_metadata::LlmMetadataObserver::new().unwrap())
+// }
 
 // Function to create SqliteObserver
 fn create_sqlite_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
@@ -34,10 +34,10 @@ fn create_tag_index_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
     Box::new(tag_index::TagIndexObserver::new(settings).unwrap())
 }
 
-// Update similar notes constructor to use settings
-fn create_similar_notes_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
-    Box::new(similar_notes::SimilarNotesObserver::new(settings).unwrap())
-}
+// // Update similar notes constructor to use settings
+// fn create_similar_notes_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
+//     Box::new(similar_notes::SimilarNotesObserver::new(settings).unwrap())
+// }
 
 // Function to create TocObserver
 fn create_toc_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> {
@@ -49,8 +49,8 @@ lazy_static::lazy_static! {
     static ref OBSERVER_REGISTRY: HashMap<&'static str, ObserverConstructor> = {
         let mut m = HashMap::new();
         m.insert("timestamp", create_timestamp_observer as ObserverConstructor);
-        m.insert("llm_metadata", create_llm_metadata_observer as ObserverConstructor);
-        m.insert("similar_notes", create_similar_notes_observer as ObserverConstructor);
+        // m.insert("llm_metadata", create_llm_metadata_observer as ObserverConstructor);
+        // m.insert("similar_notes", create_similar_notes_observer as ObserverConstructor);
         m.insert("sqlite", create_sqlite_observer as ObserverConstructor);
         m.insert("tag_index", create_tag_index_observer as ObserverConstructor);
         m.insert("toc", create_toc_observer as ObserverConstructor);

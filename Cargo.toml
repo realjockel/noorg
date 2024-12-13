@@ -25,7 +25,7 @@ chrono = { version = "0.4", features = ["serde"] }
 tempfile = "3.2.0"
 serde_yaml = "0.9"
 serde_json = "1.0"
-kalosm = { version = "0.3.2", features = ["metal", "language", "surrealdb"] }
+kalosm = { version = "0.3.2", features = [ "language", "surrealdb"] }
 tokio = { version = "1.0", features = ["full"] }
 mlua = { version = "0.10.0", features = ["lua54", "async", "send","serialize"] }
 pyo3 = { version = "0.22.5", features = ["auto-initialize", "gil-refs"] }
@@ -62,3 +62,6 @@ rustflags = ["-C", "target-feature=-avx,-avx2"]
 cocoa = "0.24.0"
 objc = "0.2"
 core-foundation = "0.10.0"
+
+[profile.release]
+lto = true

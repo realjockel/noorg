@@ -1,6 +1,7 @@
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Watcher};
 use percent_encoding::percent_decode_str;
 use std::collections::HashSet;
+use std::fs;
 use std::io;
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -9,7 +10,6 @@ use std::time::{Duration, Instant};
 use tokio::runtime::Handle;
 use tokio::sync::mpsc;
 use tracing::{debug, error, info, trace, warn};
-use std::fs;
 
 use crate::note::{Note, NoteManager};
 use crate::observer_registry::ObserverRegistry;
@@ -26,7 +26,7 @@ pub async fn watch_directory(
     stop_signal: Arc<AtomicBool>,
 ) -> io::Result<()> {
     debug!("Initializing directory watcher");
-    
+
     // Test write permissions
     let note_dir = Path::new(&settings.note_dir);
     if !note_dir.exists() {
@@ -48,7 +48,10 @@ pub async fn watch_directory(
             debug!("Successfully verified write permissions");
         }
         Err(e) => {
-            error!("Failed to write test file. This might be a permissions issue: {}", e);
+            error!(
+                "Failed to write test file. This might be a permissions issue: {}",
+                e
+            );
             return Err(io::Error::new(
                 io::ErrorKind::PermissionDenied,
                 "Cannot write to notes directory. Please check app permissions in System Settings > Privacy & Security > Files and Folders."
