@@ -1,6 +1,4 @@
 use clap::{arg, Parser, Subcommand};
-use std::sync::atomic::AtomicBool;
-use std::sync::Arc;
 use tracing::{debug, error};
 
 #[derive(Parser, Debug, Clone)]
@@ -56,9 +54,6 @@ pub enum Command {
         /// Query string (natural language or SQL)
         #[arg(short, long)]
         query: String,
-        /// Force SQL mode (skip natural language processing)
-        #[arg(short, long)]
-        sql: bool,
     },
     Watch,
 }

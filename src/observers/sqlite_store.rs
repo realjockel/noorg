@@ -1,6 +1,5 @@
 use crate::event::*;
 use crate::settings::Settings;
-use kalosm::language::*;
 use rusqlite::{Connection, Result as SqlResult};
 use std::any::Any;
 use std::collections::HashMap;
@@ -14,7 +13,6 @@ use tracing::{debug, error, info};
 
 pub struct SqliteObserver {
     conn: Arc<Mutex<Connection>>,
-    model: Llama,
     settings: Arc<Settings>,
 }
 #[derive(Debug)]
@@ -80,19 +78,9 @@ impl SqliteObserver {
             io::Error::new(io::ErrorKind::Other, e)
         })?;
 
-        debug!("Initializing LLM model");
-        let model = tokio::task::block_in_place(|| {
-            tokio::runtime::Handle::current().block_on(async {
-                Llama::phi_3()
-                    .await
-                    .map_err(|e| io::Error::new(io::ErrorKind::Other, e))
-            })
-        })?;
-
         info!("✨ SQLite observer initialized successfully");
         Ok(Self {
             conn: Arc::new(Mutex::new(conn)),
-            model,
             settings,
         })
     }
@@ -128,65 +116,6 @@ impl SqliteObserver {
 
         debug!("Successfully stored frontmatter for '{}'", title);
         Ok(())
-    }
-
-    pub async fn natural_query(&self, query: &str) -> io::Result<QueryResult> {
-        debug!("Processing natural language query: {}", query);
-
-        let task = Task::new(
-            "Convert natural language to SQLite queries.
-             You are a SQL generator. Return only the raw SQL query, no explanations or formatting. AGAIN FOR REAL.
-             Do not add any explanations.
-             
-             Database tables:
-             notes (id INTEGER PRIMARY KEY, title TEXT, path TEXT)
-             frontmatter (file_id INTEGER, key TEXT, value TEXT)
-             
-             Rules:
-             1. Use proper table aliases (n for notes, f for frontmatter)
-             2. Join using: ON n.id = f.file_id
-             3. Always use proper spacing around operators
-             4. Use single quotes for string values
-             5. Always include n.id, n.title, n.path in SELECT clause
-             6. Return only the raw SQL query, nothing else
-             
-             Examples:
-             Q: show notes tagged with rust
-             A: SELECT n.id, n.title, n.path FROM notes n JOIN frontmatter f ON n.id = f.file_id WHERE f.key = 'tags' AND f.value LIKE '%rust%'
-             
-             Q: find all notes
-             A: SELECT n.id, n.title, n.path FROM notes n"
-        );
-
-        let mut response = String::new();
-        let mut stream = task.run(query, &self.model);
-        while let Some(token) = stream.next().await {
-            response.push_str(&token);
-        }
-
-        let clean_query = response
-            .lines()
-            .find(|line| line.trim().to_uppercase().starts_with("SELECT"))
-            .unwrap_or_default()
-            .replace("nodes", "notes")
-            .replace(" AS ", " ")
-            .replace("`", "")
-            .split(';')
-            .next()
-            .unwrap_or_default()
-            .trim()
-            .to_string();
-
-        if clean_query.is_empty() {
-            error!("No valid SQL query generated from natural language input");
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
-                "No valid SQL query found in response",
-            ));
-        }
-
-        debug!("Generated SQL query: {}", clean_query);
-        self.query(&clean_query).await
     }
 
     pub async fn query(&self, sql: &str) -> io::Result<QueryResult> {

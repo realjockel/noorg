@@ -3,8 +3,6 @@ use crate::settings::Settings;
 use std::collections::HashMap;
 use std::sync::Arc;
 
-pub mod llm_metadata;
-pub mod similar_notes;
 pub mod sqlite_store;
 pub mod tag_index;
 pub mod timestamp;
@@ -19,11 +17,6 @@ fn create_timestamp_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> 
     Box::new(timestamp::TimestampObserver)
 }
 
-// // Function to create LlmMetadataObserver
-// fn create_llm_metadata_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> {
-//     Box::new(llm_metadata::LlmMetadataObserver::new().unwrap())
-// }
-
 // Function to create SqliteObserver
 fn create_sqlite_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
     Box::new(sqlite_store::SqliteObserver::new(settings).unwrap())
@@ -33,11 +26,6 @@ fn create_sqlite_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
 fn create_tag_index_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
     Box::new(tag_index::TagIndexObserver::new(settings).unwrap())
 }
-
-// // Update similar notes constructor to use settings
-// fn create_similar_notes_observer(settings: Arc<Settings>) -> Box<dyn NoteObserver> {
-//     Box::new(similar_notes::SimilarNotesObserver::new(settings).unwrap())
-// }
 
 // Function to create TocObserver
 fn create_toc_observer(_settings: Arc<Settings>) -> Box<dyn NoteObserver> {

@@ -5,7 +5,6 @@ use iced::{
     Settings as IcedSettings, Theme,
 };
 use rfd::FileDialog;
-use std::sync::mpsc;
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use tracing::error;

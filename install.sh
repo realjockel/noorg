@@ -3,22 +3,30 @@
 VERSION=$(grep version Cargo.toml | head -n 1 | cut -d '"' -f 2)
 RELEASE_DIR="target/release"
 
+check_permissions() {
+    if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root or use sudo"
+        exit 1
+    fi
+}
+
 install_unix() {
+    check_permissions
     echo "Building for Unix-like system..."
     cargo build --release
     
     # Create application directories
-    sudo mkdir -p /usr/local/bin
-    sudo mkdir -p /usr/local/share/noorg/{bin,resources}
+    mkdir -p /usr/local/bin
+    mkdir -p /usr/local/share/noorg/{bin,resources}
     
     # Copy binaries
     echo "Installing noorg binaries..."
-    sudo cp "$RELEASE_DIR/note_tray" /usr/local/share/noorg/bin/
-    sudo cp "$RELEASE_DIR/note_cli" /usr/local/share/noorg/bin/
-    sudo cp "$RELEASE_DIR/note_settings" /usr/local/share/noorg/bin/
+    cp "$RELEASE_DIR/note_tray" /usr/local/share/noorg/bin/
+    cp "$RELEASE_DIR/note_cli" /usr/local/share/noorg/bin/
+    cp "$RELEASE_DIR/note_settings" /usr/local/share/noorg/bin/
     
     # Set permissions
-    sudo chmod +x /usr/local/share/noorg/bin/*
+    chmod +x /usr/local/share/noorg/bin/*
     
     # Create command entry point with CLI support
     echo "Creating noorg command..."
@@ -36,8 +44,8 @@ else
 fi
 EOF
     
-    sudo mv /tmp/noorg /usr/local/bin/noorg
-    sudo chmod +x /usr/local/bin/noorg
+    mv /tmp/noorg /usr/local/bin/noorg
+    chmod +x /usr/local/bin/noorg
 }
 
 install_windows() {
@@ -59,11 +67,12 @@ install_windows() {
 }
 
 uninstall() {
+    check_permissions
     case "$(uname -s)" in
         Darwin*|Linux*)
             echo "Uninstalling noorg..."
-            sudo rm -f /usr/local/bin/noorg
-            sudo rm -rf /usr/local/share/noorg
+            rm -f /usr/local/bin/noorg
+            rm -rf /usr/local/share/noorg
             ;;
         MINGW*|MSYS*|CYGWIN*)
             echo "Uninstalling noorg..."
@@ -87,4 +96,4 @@ case "$1" in
             *)          echo "Unsupported platform" ;;
         esac
         ;;
-esac 
+esac

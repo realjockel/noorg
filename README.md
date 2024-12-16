@@ -85,7 +85,7 @@ lua -e "print(package.path:match('([^;]+)/?.lua'))"
 curl -O https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
 
 # macOS: Copy to Lua package path
-sudo cp json.lua /opt/homebrew/share/lua/5.4/json.lua
+cp json.lua /opt/homebrew/share/lua/5.4/json.lua
 
 # Verify installation
 lua -e "require('json')"
@@ -99,21 +99,21 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 2. Install Python Dependencies:
 ```bash
 add-apt-repository ppa:deadsnakes/ppa
-sudo apt-get install -y python3.9 python3.9-distutils python3.9-venv
-sudo apt-get install -y python3.12-dev
+apt-get install -y python3.9 python3.9-distutils python3.9-venv
+apt-get install -y python3.12-dev
 ```
 
 3. Install Lua Depenedncies
 ```bash
-sudo apt-get install -y lua5.4 liblua5.4-dev liblua5.1-0-dev
+apt-get install -y lua5.4 liblua5.4-dev liblua5.1-0-dev
 curl -O https://raw.githubusercontent.com/rxi/json.lua/master/json.lua
-sudo mkdir /usr/local/share/lua/5.4/ -p
-sudo cp json.lua /usr/local/share/lua/5.4/json.lua
+mkdir /usr/local/share/lua/5.4/ -p
+cp json.lua /usr/local/share/lua/5.4/json.lua
 ```
 
 4. Install additionl dependencies
 ```bash
-sudo apt-get install -y libxdo-dev libsqlite3-dev libssl-dev libglib2.0-dev libgirepository1.0-dev gcc g++ clang libgtk-3-dev
+apt-get install -y libxdo-dev libsqlite3-dev libssl-dev libglib2.0-dev libgirepository1.0-dev gcc g++ clang libgtk-3-dev
 ```
 
 ### Option Build from Source

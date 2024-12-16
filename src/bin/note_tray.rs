@@ -4,7 +4,6 @@ use noorg::{
     observer_registry::ObserverRegistry, script_loader::ScriptLoader, settings::Settings,
     window_manager,
 };
-use std::env;
 use std::io::Cursor;
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -88,12 +87,6 @@ fn get_cli_path() -> PathBuf {
     path.push("note_cli.exe");
     #[cfg(not(target_os = "windows"))]
     path.push("note_cli");
-    path
-}
-
-fn get_resources_path() -> PathBuf {
-    let mut path = get_base_path();
-    path.push("resources");
     path
 }
 

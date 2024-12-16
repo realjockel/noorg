@@ -111,7 +111,7 @@ pub async fn handle_command(
                 info!("- {}", observer);
             }
         }
-        Command::Query { query, sql } => {
+        Command::Query { query } => {
             debug!("Handling query command: {}", query);
             let observers = observer_registry.get_observers().await;
             let sqlite_observer = observers
@@ -126,15 +126,8 @@ pub async fn handle_command(
                     )
                 })?;
 
-            debug!(
-                "Executing {} query",
-                if sql { "SQL" } else { "natural language" }
-            );
-            let results = if sql {
-                sqlite_observer.query(&query).await?
-            } else {
-                sqlite_observer.natural_query(&query).await?
-            };
+            debug!("Executing {} query", &query);
+            let results = sqlite_observer.query(&query).await?;
 
             if results.rows.is_empty() {
                 info!("No matching notes found");
