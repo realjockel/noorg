@@ -48,6 +48,35 @@ EOF
     chmod +x /usr/local/bin/noorg
 }
 
+install_unix_cli_only() {
+    check_permissions
+    echo "Building for Unix-like system (CLI only)..."
+    cargo build --release
+    
+    # Create application directories
+    mkdir -p /usr/local/bin
+    mkdir -p /usr/local/share/noorg/bin
+    
+    # Copy binaries
+    echo "Installing noorg CLI binary..."
+    cp "$RELEASE_DIR/note_cli" /usr/local/share/noorg/bin/
+    
+    # Set permissions
+    chmod +x /usr/local/share/noorg/bin/note_cli
+    
+    # Create command entry point with CLI support
+    echo "Creating noorg command..."
+    cat > /tmp/noorg << 'EOF'
+#!/bin/bash
+cd /usr/local/share/noorg
+
+exec bin/note_cli "$@"
+EOF
+    
+    mv /tmp/noorg /usr/local/bin/noorg
+    chmod +x /usr/local/bin/noorg
+}
+
 install_windows() {
     echo "Building for Windows..."
     cargo build --release
@@ -88,6 +117,13 @@ uninstall() {
 case "$1" in
     uninstall)
         uninstall
+        ;;
+    cli-only)
+        case "$(uname -s)" in
+            Darwin*|Linux*)    install_unix_cli_only ;;
+            MINGW*|MSYS*|CYGWIN*)    echo "CLI-only installation is not supported on Windows" ;;
+            *)          echo "Unsupported platform" ;;
+        esac
         ;;
     *)
         case "$(uname -s)" in
