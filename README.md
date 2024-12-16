@@ -132,10 +132,18 @@ cargo build --release
 
 
 ### Install Script (prefered)
+If you want the system tray and settings UI, you can use the full install script.
 
 ```bash
 ./install.sh
 ```
+For Linux (because the system tray and UI doesn't work on Linux yet), you can install without the system tray and UI:
+
+```bash
+./install.sh cli-only
+```
+
+
 Uninstall with:
 ```bash
 ./install.sh uninstall
@@ -149,12 +157,6 @@ Run `noorg` system tray application.
 ```bash
 noorg
 ```
-
-⚠️ Note: The system tray application displays but doesn't work on Linux so far. Therefore, use the note_cli tool with the following command
-```bash
-noorg note_cli watch
-```
-
 
 Run `noorg note_cli` to use the command line interface.
 ```bash
